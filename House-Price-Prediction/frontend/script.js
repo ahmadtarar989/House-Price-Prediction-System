@@ -1,59 +1,15 @@
-// script.js - loads results from the Flask API (or a saved snapshot on GitHub Pages) and draws the dashboard.
-
-// If you deploy the Flask app (Render, PythonAnywhere...), put its URL here, e.g.
-// const API_BASE = "https://house-price-api.onrender.com";
-// Leave empty for local use or for the static GitHub Pages snapshot.
-const API_BASE = "";
-
-const IS_LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
-const STATIC = !API_BASE && !IS_LOCAL;   // true on GitHub Pages without a backend
+// script.js - loads the real results from the Flask API and draws the dashboard.
 
 const $ = (selector) => document.querySelector(selector);
 const fmt = (n, d = 0) => (n === null || n === undefined) ? "-" :
   Number(n).toLocaleString(undefined, { maximumFractionDigits: d });
 
-async function fetchJSON(url, options) {
+async function getJSON(url, options) {
   const res = await fetch(url, options);
-  const text = await res.text();
-  let data;
-  try {
-    data = JSON.parse(text);
-  } catch {
-    throw new Error(`Could not load ${url} (not JSON). Check the file exists and the path is correct.`);
-  }
+  const data = await res.json();
   if (!res.ok) throw new Error(data.error || res.statusText);
   return data;
 }
-
-const STATIC_FILES = {
-  "/api/etl": "data/etl.json",
-  "/api/eda": "data/eda.json",
-  "/api/rejected": "data/rejected.json",
-};
-let previewCache = null;
-
-async function getJSON(url, options) {
-  if (!STATIC) return fetchJSON(API_BASE + url, options);
-
-  if (options && options.method === "POST") {
-    previewCache = null;                       // force a fresh read of the saved files
-    return { status: "reloaded" };
-  }
-  const [path, query = ""] = url.split("?");
-  if (path === "/api/preview") {
-    previewCache = previewCache || await fetchJSON("data/preview.json");
-    const q = new URLSearchParams(query);
-    const limit = +q.get("limit"), offset = +q.get("offset");
-    return {
-      columns: previewCache.columns,
-      rows: previewCache.rows.slice(offset, offset + limit),
-      total: previewCache.rows.length,
-    };
-  }
-  return fetchJSON(STATIC_FILES[path] + "?t=" + Date.now());   // avoid cached copies
-}
-
-const vizUrl = (file) => (STATIC ? "../visualizations/" : API_BASE + "/visualizations/") + file;
 
 // Build a table. `rows` is an array of arrays; text goes in with textContent (safe).
 function renderTable(table, headers, rows, numericFrom = 1) {
@@ -201,10 +157,10 @@ function renderCharts(eda) {
       const fig = document.createElement("figure");
       if (WIDE.has(c.file)) fig.className = "wide";
       const link = document.createElement("a");
-      link.href = vizUrl(c.file);
+      link.href = "/visualizations/" + c.file;
       link.target = "_blank";
       const img = document.createElement("img");
-      img.src = vizUrl(c.file);
+      img.src = "/visualizations/" + c.file;
       img.alt = c.title;
       img.loading = "lazy";
       link.appendChild(img);
@@ -259,10 +215,10 @@ $("#next").addEventListener("click", () => { page.offset += page.size; loadPrevi
 $("#run-btn").addEventListener("click", async () => {
   const btn = $("#run-btn");
   btn.disabled = true;
-  $("#run-status").textContent = STATIC ? "Reloading saved results..." : "Running ETL and EDA...";
+  $("#run-status").textContent = "Running ETL and EDA...";
   try {
     await getJSON("/api/run", { method: "POST" });
-    $("#run-status").textContent = STATIC ? "Saved results loaded" : "Finished";
+    $("#run-status").textContent = "Finished";
     page.offset = 0;
     await loadDashboard();
   } catch (err) {
@@ -270,10 +226,5 @@ $("#run-btn").addEventListener("click", async () => {
   }
   btn.disabled = false;
 });
-
-if (STATIC) {
-  $("#run-btn").textContent = "Reload saved results";
-  $("#run-status").textContent = "Static demo (saved results)";
-}
 
 loadDashboard();
