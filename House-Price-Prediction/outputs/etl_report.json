@@ -1,0 +1,138 @@
+{
+  "extract": {
+    "source_file": "kc_house_data.csv",
+    "rows": 21613,
+    "columns": 21,
+    "column_names": [
+      "id",
+      "date",
+      "price",
+      "bedrooms",
+      "bathrooms",
+      "sqft_living",
+      "sqft_lot",
+      "floors",
+      "waterfront",
+      "view",
+      "condition",
+      "grade",
+      "sqft_above",
+      "sqft_basement",
+      "yr_built",
+      "yr_renovated",
+      "zipcode",
+      "lat",
+      "long",
+      "sqft_living15",
+      "sqft_lot15"
+    ],
+    "dtypes": {
+      "id": "int64",
+      "date": "str",
+      "price": "float64",
+      "bedrooms": "int64",
+      "bathrooms": "float64",
+      "sqft_living": "int64",
+      "sqft_lot": "int64",
+      "floors": "float64",
+      "waterfront": "int64",
+      "view": "int64",
+      "condition": "int64",
+      "grade": "int64",
+      "sqft_above": "int64",
+      "sqft_basement": "int64",
+      "yr_built": "int64",
+      "yr_renovated": "int64",
+      "zipcode": "int64",
+      "lat": "float64",
+      "long": "float64",
+      "sqft_living15": "int64",
+      "sqft_lot15": "int64"
+    },
+    "missing_values": 0,
+    "duplicate_rows": 0,
+    "duplicate_ids": 177
+  },
+  "transform": {
+    "rows_in": 21613,
+    "rows_out": 21613,
+    "columns_in": 21,
+    "columns_out": 30,
+    "log": [
+      {
+        "step": "Fix data types",
+        "action": "date -> datetime (renamed sale_date), zipcode -> text, other columns checked as numeric",
+        "reason": "Dates must be real dates for time features; zipcode is a category, so averaging it makes no sense.",
+        "rows_affected": 0
+      },
+      {
+        "step": "Remove duplicates",
+        "action": "Removed 0 identical rows",
+        "reason": "Exact copies add no information and would bias statistics.",
+        "rows_affected": 0
+      },
+      {
+        "step": "Keep repeated house ids",
+        "action": "Kept 177 rows whose id appears more than once",
+        "reason": "The same house sold on different dates is a genuine second sale, not a duplicate record.",
+        "rows_affected": 0
+      },
+      {
+        "step": "Missing values",
+        "action": "No missing values found - nothing to fill or drop",
+        "reason": "The check is still run so the pipeline works on other versions of the data.",
+        "rows_affected": 0
+      },
+      {
+        "step": "Feature engineering",
+        "action": "Added sale_year, sale_month, house_age, is_renovated, has_basement, price_per_sqft, log_price",
+        "reason": "These make patterns easier to see in EDA and are useful inputs for a later prediction model.",
+        "rows_affected": 0
+      },
+      {
+        "step": "Fix negative house age",
+        "action": "house_age set to 0 for 12 rows",
+        "reason": "yr_built is later than the sale year (house sold before completion); age cannot be negative.",
+        "rows_affected": 12
+      },
+      {
+        "step": "Flag price outliers (IQR)",
+        "action": "1146 rows flagged in column price_outlier, NOT removed",
+        "reason": "Expensive houses are real sales (large, waterfront, luxury). Flagging keeps the information; only impossible values are removed in the validation step.",
+        "rows_affected": 1146
+      },
+      {
+        "step": "Encode zipcode",
+        "action": "Added zipcode_code (integer label for each zipcode)",
+        "reason": "Gives a numeric form of the location for later modelling; the original zipcode is kept.",
+        "rows_affected": 0
+      }
+    ]
+  },
+  "validate": {
+    "checked": 21613,
+    "passed": 21596,
+    "failed": 17,
+    "errors_by_field": {
+      "bedrooms": 14,
+      "bathrooms": 10
+    },
+    "rules": [
+      "price, sqft_living, sqft_lot > 0",
+      "bedrooms between 1 and 20 (whole numbers)",
+      "bathrooms > 0 and <= 10",
+      "floors 1-4, condition 1-5, grade 1-13, view 0-4, waterfront 0 or 1",
+      "yr_built 1800-2015, yr_renovated 0 or not earlier than yr_built",
+      "zipcode must be 5 digits; lat/long inside King County area",
+      "sqft_above + sqft_basement = sqft_living"
+    ]
+  },
+  "load": {
+    "rows_loaded": 21596,
+    "rows_rejected": 17,
+    "csv_file": "cleaned_house_prices.csv",
+    "database_file": "house_prices.db",
+    "table": "houses"
+  },
+  "seconds": 2.87
+}

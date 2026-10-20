@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>House Price Prediction System - Phase-01</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-row">
+      <div>
+        <h1>House Price Prediction System</h1>
+        <p>Phase-01: ETL &amp; Exploratory Data Analysis</p>
+      </div>
+      <div class="top-actions">
+        <span id="run-status" role="status"></span>
+        <button id="run-btn" type="button">Run pipeline</button>
+      </div>
+    </div>
+    <nav class="wrap" aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#preview">Data preview</a>
+      <a href="#info">Dataset information</a>
+      <a href="#quality">Data quality</a>
+      <a href="#eda">EDA charts</a>
+      <a href="#outliers">Outliers</a>
+      <a href="#findings">Findings</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div id="message" class="banner" hidden></div>
+
+    <section id="overview">
+      <h2>Dataset overview</h2>
+      <p class="note">Numbers describe the cleaned dataset stored in the database.</p>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <section id="pipeline">
+      <h2>ETL pipeline</h2>
+      <p class="note">Raw CSV, then Extract, Transform, Validate and Load.</p>
+      <ol class="steps" id="steps"></ol>
+      <h3>Transformations and the reason for each</h3>
+      <div class="scroll"><table id="transform-log"></table></div>
+      <h3>Validation rules (Pydantic)</h3>
+      <ul id="rules"></ul>
+      <h3>Rejected records</h3>
+      <p class="note" id="rejected-note"></p>
+      <div class="scroll"><table id="rejected"></table></div>
+    </section>
+
+    <section id="preview">
+      <h2>Data preview</h2>
+      <div class="toolbar">
+        <label>Rows per page
+          <select id="page-size"><option>10</option><option>25</option><option>50</option></select>
+        </label>
+        <button type="button" id="prev">Previous</button>
+        <button type="button" id="next">Next</button>
+        <span id="page-label"></span>
+      </div>
+      <div class="scroll"><table id="preview-table"></table></div>
+    </section>
+
+    <section id="info">
+      <h2>Dataset information</h2>
+      <div class="two">
+        <div>
+          <h3>Columns, data types and non-null values</h3>
+          <div class="scroll tall"><table id="columns-table"></table></div>
+        </div>
+        <div>
+          <h3>Summary statistics (numeric columns)</h3>
+          <div class="scroll tall"><table id="stats-table"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quality">
+      <h2>Data quality</h2>
+      <div class="two">
+        <div>
+          <h3>Missing values per column</h3>
+          <p class="note" id="missing-note"></p>
+          <div class="scroll tall"><table id="missing-table"></table></div>
+        </div>
+        <div>
+          <h3>Duplicates</h3>
+          <div class="scroll"><table id="dup-table"></table></div>
+          <h3>Discrete and categorical columns</h3>
+          <div class="scroll"><table id="cat-table"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="eda">
+      <h2>EDA visualizations</h2>
+      <div id="charts"></div>
+    </section>
+
+    <section id="outliers">
+      <h2>Outlier analysis (IQR rule)</h2>
+      <p class="note">An outlier lies below Q1 - 1.5 x IQR or above Q3 + 1.5 x IQR. Outliers that are real houses are kept; only records that break the validation rules are removed.</p>
+      <div class="scroll"><table id="outlier-table"></table></div>
+    </section>
+
+    <section id="findings">
+      <h2>Key findings</h2>
+      <ul id="findings-list"></ul>
+    </section>
+  </main>
+
+  <footer class="wrap">Phase-01 only: no machine learning model or prediction is included yet.</footer>
+  <script src="script.js"></script>
+</body>
+</html>

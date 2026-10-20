@@ -1,0 +1,6 @@
+pandas
+numpy
+pydantic
+matplotlib
+seaborn
+flask

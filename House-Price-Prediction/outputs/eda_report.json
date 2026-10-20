@@ -1,0 +1,892 @@
+{
+  "overview": {
+    "rows": 21596,
+    "columns": 30,
+    "missing_values": 0,
+    "duplicate_rows": 0,
+    "memory_mb": 5.89,
+    "target": "price"
+  },
+  "columns": [
+    {
+      "column": "id",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 21419
+    },
+    {
+      "column": "sale_date",
+      "dtype": "datetime64[us]",
+      "non_null": 21596,
+      "unique": 372
+    },
+    {
+      "column": "price",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 4024
+    },
+    {
+      "column": "bedrooms",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 11
+    },
+    {
+      "column": "bathrooms",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 29
+    },
+    {
+      "column": "sqft_living",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 1034
+    },
+    {
+      "column": "sqft_lot",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 9776
+    },
+    {
+      "column": "floors",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 6
+    },
+    {
+      "column": "waterfront",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 2
+    },
+    {
+      "column": "view",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 5
+    },
+    {
+      "column": "condition",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 5
+    },
+    {
+      "column": "grade",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 11
+    },
+    {
+      "column": "sqft_above",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 942
+    },
+    {
+      "column": "sqft_basement",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 306
+    },
+    {
+      "column": "yr_built",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 116
+    },
+    {
+      "column": "yr_renovated",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 70
+    },
+    {
+      "column": "zipcode",
+      "dtype": "str",
+      "non_null": 21596,
+      "unique": 70
+    },
+    {
+      "column": "lat",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 5033
+    },
+    {
+      "column": "long",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 751
+    },
+    {
+      "column": "sqft_living15",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 777
+    },
+    {
+      "column": "sqft_lot15",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 8682
+    },
+    {
+      "column": "sale_year",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 2
+    },
+    {
+      "column": "sale_month",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 12
+    },
+    {
+      "column": "house_age",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 116
+    },
+    {
+      "column": "is_renovated",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 2
+    },
+    {
+      "column": "has_basement",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 2
+    },
+    {
+      "column": "price_per_sqft",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 14090
+    },
+    {
+      "column": "log_price",
+      "dtype": "float64",
+      "non_null": 21596,
+      "unique": 3742
+    },
+    {
+      "column": "price_outlier",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 2
+    },
+    {
+      "column": "zipcode_code",
+      "dtype": "int64",
+      "non_null": 21596,
+      "unique": 70
+    }
+  ],
+  "statistics": [
+    {
+      "column": "id",
+      "mean": 4580575157.070522,
+      "median": 3904930470.0,
+      "std": 2876764127.56347,
+      "min": 1000102.0,
+      "max": 9900000190.0
+    },
+    {
+      "column": "price",
+      "mean": 540198.2986664197,
+      "median": 450000.0,
+      "std": 367141.6031115278,
+      "min": 78000.0,
+      "max": 7700000.0
+    },
+    {
+      "column": "bedrooms",
+      "mean": 3.3718281163178365,
+      "median": 3.0,
+      "std": 0.9041137294832645,
+      "min": 1.0,
+      "max": 11.0
+    },
+    {
+      "column": "bathrooms",
+      "mean": 2.1158432117058714,
+      "median": 2.25,
+      "std": 0.7689980715456797,
+      "min": 0.5,
+      "max": 8.0
+    },
+    {
+      "column": "sqft_living",
+      "mean": 2080.343165401,
+      "median": 1910.0,
+      "std": 918.1220383102111,
+      "min": 370.0,
+      "max": 13540.0
+    },
+    {
+      "column": "sqft_lot",
+      "mean": 15099.830107427302,
+      "median": 7619.0,
+      "std": 41413.54941865338,
+      "min": 520.0,
+      "max": 1651359.0
+    },
+    {
+      "column": "floors",
+      "mean": 1.4941192813483979,
+      "median": 1.5,
+      "std": 0.5396848123027886,
+      "min": 1.0,
+      "max": 3.5
+    },
+    {
+      "column": "waterfront",
+      "mean": 0.007547694017410632,
+      "median": 0.0,
+      "std": 0.08655098616197653,
+      "min": 0.0,
+      "max": 1.0
+    },
+    {
+      "column": "view",
+      "mean": 0.23430264863863678,
+      "median": 0.0,
+      "std": 0.7664059184623142,
+      "min": 0.0,
+      "max": 4.0
+    },
+    {
+      "column": "condition",
+      "mean": 3.4097518058899796,
+      "median": 3.0,
+      "std": 0.6504706924778492,
+      "min": 1.0,
+      "max": 5.0
+    },
+    {
+      "column": "grade",
+      "mean": 7.657945915910354,
+      "median": 7.0,
+      "std": 1.1732182844192156,
+      "min": 3.0,
+      "max": 13.0
+    },
+    {
+      "column": "sqft_above",
+      "mean": 1788.6315058344137,
+      "median": 1560.0,
+      "std": 827.7632509404336,
+      "min": 370.0,
+      "max": 9410.0
+    },
+    {
+      "column": "sqft_basement",
+      "mean": 291.7116595665864,
+      "median": 0.0,
+      "std": 442.67370285677885,
+      "min": 0.0,
+      "max": 4820.0
+    },
+    {
+      "column": "yr_built",
+      "mean": 1971.0007871828116,
+      "median": 1975.0,
+      "std": 29.375460260338606,
+      "min": 1900.0,
+      "max": 2015.0
+    },
+    {
+      "column": "yr_renovated",
+      "mean": 84.46869790701982,
+      "median": 0.0,
+      "std": 401.830330298443,
+      "min": 0.0,
+      "max": 2015.0
+    },
+    {
+      "column": "lat",
+      "mean": 47.56008708094092,
+      "median": 47.5718,
+      "std": 0.1385522505808976,
+      "min": 47.1559,
+      "max": 47.7776
+    },
+    {
+      "column": "long",
+      "mean": -122.2139770790887,
+      "median": -122.231,
+      "std": 0.14072453401397286,
+      "min": -122.519,
+      "max": -121.315
+    },
+    {
+      "column": "sqft_living15",
+      "mean": 1986.6507223559918,
+      "median": 1840.0,
+      "std": 685.2317684172218,
+      "min": 399.0,
+      "max": 6210.0
+    },
+    {
+      "column": "sqft_lot15",
+      "mean": 12758.656649379514,
+      "median": 7620.0,
+      "std": 27275.018316076417,
+      "min": 651.0,
+      "max": 871200.0
+    },
+    {
+      "column": "sale_year",
+      "mean": 2014.3229764771254,
+      "median": 2014.0,
+      "std": 0.46762463361634854,
+      "min": 2014.0,
+      "max": 2015.0
+    },
+    {
+      "column": "sale_month",
+      "mean": 6.573995184293388,
+      "median": 6.0,
+      "std": 3.11513090428718,
+      "min": 1.0,
+      "max": 12.0
+    },
+    {
+      "column": "house_age",
+      "mean": 43.32274495276903,
+      "median": 40.0,
+      "std": 29.376694134339274,
+      "min": 0.0,
+      "max": 115.0
+    },
+    {
+      "column": "is_renovated",
+      "mean": 0.042322652343026484,
+      "median": 0.0,
+      "std": 0.201328890951971,
+      "min": 0.0,
+      "max": 1.0
+    },
+    {
+      "column": "has_basement",
+      "mean": 0.3929431376180774,
+      "median": 0.0,
+      "std": 0.4884156777153624,
+      "min": 0.0,
+      "max": 1.0
+    },
+    {
+      "column": "price_per_sqft",
+      "mean": 264.11018984997224,
+      "median": 244.625,
+      "std": 109.95926472396468,
+      "min": 87.59,
+      "max": 810.14
+    },
+    {
+      "column": "log_price",
+      "mean": 13.048128213558066,
+      "median": 13.017,
+      "std": 0.5264256261545106,
+      "min": 11.2645,
+      "max": 15.8567
+    },
+    {
+      "column": "price_outlier",
+      "mean": 0.053019077606964254,
+      "median": 0.0,
+      "std": 0.22407672793454808,
+      "min": 0.0,
+      "max": 1.0
+    },
+    {
+      "column": "zipcode_code",
+      "mean": 35.150166697536584,
+      "median": 34.0,
+      "std": 19.24936109920218,
+      "min": 0.0,
+      "max": 69.0
+    }
+  ],
+  "missing": [
+    {
+      "column": "id",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sale_date",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "price",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "bedrooms",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "bathrooms",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sqft_living",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sqft_lot",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "floors",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "waterfront",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "view",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "condition",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "grade",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sqft_above",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sqft_basement",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "yr_built",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "yr_renovated",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "zipcode",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "lat",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "long",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sqft_living15",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sqft_lot15",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sale_year",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "sale_month",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "house_age",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "is_renovated",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "has_basement",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "price_per_sqft",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "log_price",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "price_outlier",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    },
+    {
+      "column": "zipcode_code",
+      "missing": 0,
+      "percent": 0.0,
+      "significant": false
+    }
+  ],
+  "duplicates": {
+    "full_row_duplicates": 0,
+    "full_row_percent": 0.0,
+    "repeated_ids": 177,
+    "repeated_ids_percent": 0.82
+  },
+  "categorical": [
+    {
+      "column": "bedrooms",
+      "unique": 11,
+      "most_common": "3",
+      "count": 9824,
+      "percent": 45.5
+    },
+    {
+      "column": "floors",
+      "unique": 6,
+      "most_common": "1.0",
+      "count": 10672,
+      "percent": 49.4
+    },
+    {
+      "column": "waterfront",
+      "unique": 2,
+      "most_common": "0",
+      "count": 21433,
+      "percent": 99.2
+    },
+    {
+      "column": "view",
+      "unique": 5,
+      "most_common": "0",
+      "count": 19474,
+      "percent": 90.2
+    },
+    {
+      "column": "condition",
+      "unique": 5,
+      "most_common": "3",
+      "count": 14020,
+      "percent": 64.9
+    },
+    {
+      "column": "grade",
+      "unique": 11,
+      "most_common": "7",
+      "count": 8973,
+      "percent": 41.5
+    },
+    {
+      "column": "zipcode",
+      "unique": 70,
+      "most_common": "98103",
+      "count": 601,
+      "percent": 2.8
+    }
+  ],
+  "correlation_with_price": [
+    {
+      "column": "sqft_living",
+      "corr": 0.702
+    },
+    {
+      "column": "grade",
+      "corr": 0.668
+    },
+    {
+      "column": "sqft_above",
+      "corr": 0.605
+    },
+    {
+      "column": "sqft_living15",
+      "corr": 0.585
+    },
+    {
+      "column": "bathrooms",
+      "corr": 0.526
+    },
+    {
+      "column": "view",
+      "corr": 0.397
+    },
+    {
+      "column": "sqft_basement",
+      "corr": 0.324
+    },
+    {
+      "column": "bedrooms",
+      "corr": 0.316
+    },
+    {
+      "column": "lat",
+      "corr": 0.307
+    },
+    {
+      "column": "waterfront",
+      "corr": 0.266
+    },
+    {
+      "column": "floors",
+      "corr": 0.257
+    },
+    {
+      "column": "has_basement",
+      "corr": 0.18
+    },
+    {
+      "column": "yr_renovated",
+      "corr": 0.126
+    },
+    {
+      "column": "is_renovated",
+      "corr": 0.126
+    },
+    {
+      "column": "sqft_lot",
+      "corr": 0.09
+    },
+    {
+      "column": "sqft_lot15",
+      "corr": 0.083
+    },
+    {
+      "column": "yr_built",
+      "corr": 0.054
+    },
+    {
+      "column": "condition",
+      "corr": 0.036
+    },
+    {
+      "column": "long",
+      "corr": 0.022
+    },
+    {
+      "column": "house_age",
+      "corr": -0.054
+    }
+  ],
+  "outliers": [
+    {
+      "column": "price",
+      "lower": -162500.0,
+      "upper": 1129500.0,
+      "count": 1145,
+      "percent": 5.3,
+      "max": 7700000.0
+    },
+    {
+      "column": "sqft_living",
+      "lower": -250.0,
+      "upper": 4230.0,
+      "count": 571,
+      "percent": 2.64,
+      "max": 13540
+    },
+    {
+      "column": "sqft_lot",
+      "lower": -3428.25,
+      "upper": 19153.75,
+      "count": 2419,
+      "percent": 11.2,
+      "max": 1651359
+    },
+    {
+      "column": "bedrooms",
+      "lower": 1.5,
+      "upper": 5.5,
+      "count": 529,
+      "percent": 2.45,
+      "max": 11
+    },
+    {
+      "column": "bathrooms",
+      "lower": 0.62,
+      "upper": 3.62,
+      "count": 561,
+      "percent": 2.6,
+      "max": 8.0
+    },
+    {
+      "column": "sqft_above",
+      "lower": -340.0,
+      "upper": 3740.0,
+      "count": 610,
+      "percent": 2.82,
+      "max": 9410
+    },
+    {
+      "column": "sqft_basement",
+      "lower": -840.0,
+      "upper": 1400.0,
+      "count": 496,
+      "percent": 2.3,
+      "max": 4820
+    },
+    {
+      "column": "sqft_living15",
+      "lower": 185.0,
+      "upper": 3665.0,
+      "count": 543,
+      "percent": 2.51,
+      "max": 6210
+    },
+    {
+      "column": "sqft_lot15",
+      "lower": -2374.5,
+      "upper": 17557.5,
+      "count": 2188,
+      "percent": 10.13,
+      "max": 871200
+    },
+    {
+      "column": "house_age",
+      "lower": -49.5,
+      "upper": 130.5,
+      "count": 0,
+      "percent": 0.0,
+      "max": 115
+    }
+  ],
+  "findings": [
+    "Strongest positive correlations with price: sqft_living (0.70), grade (0.67), sqft_above (0.61).",
+    "Price is right-skewed (skewness 4.03): mean $540,198 is above median $450,000, so log_price was created.",
+    "1145 houses (5.3%) are price outliers by the IQR rule. They are kept because they are real expensive homes, not data errors.",
+    "Zipcode 98039 has the highest median price ($1,892,500); zipcode 98002 has the lowest ($235,000).",
+    "Waterfront homes have a median price 3.1 times that of other homes.",
+    "Median price rises from $262,000 at grade 3 to $2,983,000 at grade 13.",
+    "177 rows are repeat sales of a house already in the data (same id, different date)."
+  ],
+  "charts": [
+    {
+      "file": "distributions.png",
+      "title": "Distribution of key numeric variables",
+      "caption": "Price and price_per_sqft are right-skewed (a few very expensive homes); log_price is closer to symmetric. sqft_lot is drawn on a log axis because a few lots are huge.",
+      "section": "distribution"
+    },
+    {
+      "file": "category_counts.png",
+      "title": "Frequency of discrete features",
+      "caption": "These columns hold a small set of values (counts, ratings), so they are analysed like categories.",
+      "section": "categorical"
+    },
+    {
+      "file": "zipcode_counts.png",
+      "title": "15 most common zipcodes",
+      "caption": "Zipcode is the only text-type category in this dataset.",
+      "section": "categorical"
+    },
+    {
+      "file": "correlation_heatmap.png",
+      "title": "Correlation heatmap",
+      "caption": "Pearson correlation between numeric columns (computed with NumPy). Columns derived from price are left out.",
+      "section": "correlation"
+    },
+    {
+      "file": "correlation_with_price.png",
+      "title": "Correlation of each feature with price",
+      "caption": "Longer bars mean a stronger linear relationship with price.",
+      "section": "correlation"
+    },
+    {
+      "file": "boxplots.png",
+      "title": "Box plots for outlier detection",
+      "caption": "Points beyond the whiskers are IQR outliers. Price and sqft_lot use a log axis.",
+      "section": "outliers"
+    },
+    {
+      "file": "price_vs_sqft_living.png",
+      "title": "Price vs living area",
+      "caption": "Price rises with living area, and the spread widens for larger homes.",
+      "section": "relationships"
+    },
+    {
+      "file": "price_by_grade.png",
+      "title": "Median price by grade",
+      "caption": "Better construction grade goes with higher prices.",
+      "section": "relationships"
+    },
+    {
+      "file": "price_by_zipcode.png",
+      "title": "Top 10 zipcodes by median price",
+      "caption": "Only zipcodes with at least 30 sales are compared. Location strongly affects price.",
+      "section": "relationships"
+    },
+    {
+      "file": "price_by_waterfront.png",
+      "title": "Price by waterfront (0 = no, 1 = yes)",
+      "caption": "Log price axis. Waterfront homes are priced higher.",
+      "section": "relationships"
+    }
+  ]
+}
