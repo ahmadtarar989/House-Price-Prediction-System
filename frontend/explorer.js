@@ -1,4 +1,4 @@
-/* explorer.js - interactive dashboard. Data comes from /api/explorer-data (cleaned SQLite table).
+/* explorer.js - interactive dashboard. Data comes from explorer-data.json (cleaned SQLite table).
    All filtering happens in the browser, so every slider/click updates the charts instantly. */
 /* show any error on the page itself so problems are easy to see */
 window.addEventListener("error", e => { const s = document.querySelector("#sub"); if (s) s.textContent = "Error: " + e.message; });
@@ -224,7 +224,7 @@ function fillSelect(id, obj, val, keys) { $(id).innerHTML = (keys || Object.keys
 
 async function boot() {
   let r;
-  try { r = await (await fetch("/api/explorer-data")).json(); } catch (e) { r = { error: String(e) }; }
+  try { r = await (await fetch("explorer-data.json")).json(); } catch (e) { r = { error: String(e) }; }
   if (r.error) { $("#sub").textContent = r.error; return; }
   D = r.data; N = r.n;
   const byZ = {}; for (let i = 0; i < N; i++) (byZ[D.zipcode[i]] = byZ[D.zipcode[i]] || []).push(D.price[i]);
