@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Housing Data Explorer</title>
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="explorer.css">
+<script src="plotly.min.js"></script>
+</head>
+<body>
+<header class="bar">
+  <div class="brand"><span class="mark"></span><div><h1>House Price Prediction System </h1><p id="sub">Loading data...</p></div></div>
+  <div class="bar-actions">
+    <a class="btn ghost" href="/">ETL &amp; EDA report</a>
+    <button class="btn ghost" id="reset" type="button">Reset filters</button>
+    <button class="btn ghost" id="theme" type="button" aria-label="Toggle dark mode">Dark mode</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="filters" aria-label="Filters">
+    <h2>Filters</h2>
+    <div id="duals"></div>
+    <div class="field"><label>Bedrooms <small>(click to select)</small></label><div class="chips" id="beds"></div></div>
+    <div class="field"><label>Waterfront</label><div class="seg" id="water" data-key="water"></div></div>
+    <div class="field"><label>Renovated</label><div class="seg" id="reno" data-key="reno"></div></div>
+    <div class="field"><label for="zip">Zipcode</label><select id="zip"></select></div>
+    <p class="hint">Tip: click a bar, bin or point on any chart to filter or inspect it.</p>
+  </aside>
+
+  <main>
+    <section class="kpis" id="kpis"></section>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+
+    <section class="panel" id="p-overview">
+      <div class="grid2">
+        <div class="card"><h3>Price distribution <small>click a bar to filter price</small></h3><div id="c-price" class="plot"></div></div>
+        <div class="card"><h3>Median price over time</h3><div id="c-trend" class="plot"></div></div>
+        <div class="card"><h3>Median price by grade <small>click to filter</small></h3><div id="c-grade" class="plot"></div></div>
+        <div class="card"><h3>Houses by bedrooms <small>click to filter</small></h3><div id="c-beds" class="plot"></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-explorer" hidden>
+      <div class="card">
+        <div class="controls">
+          <label>X <select id="sx"></select></label>
+          <label>Y <select id="sy"></select></label>
+          <label>Colour <select id="sc"></select></label>
+          <label class="chk"><input type="checkbox" id="logy"> Log Y</label>
+          <label class="chk"><input type="checkbox" id="trend" checked> Trendline</label>
+        </div>
+        <div id="c-scatter" class="plot tall"></div>
+        <p class="note" id="scatter-note"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="p-dist" hidden>
+      <div class="grid2">
+        <div class="card">
+          <div class="controls"><label>Variable <select id="dv"></select></label>
+            <label>Bins <input type="range" id="bins" min="8" max="80" value="30"><span id="bins-v">30</span></label></div>
+          <div id="c-hist" class="plot"></div>
+        </div>
+        <div class="card">
+          <div class="controls"><label>Price by <select id="bv"></select></label></div>
+          <div id="c-box" class="plot"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-map" hidden>
+      <div class="card"><h3>Where the houses are <small>colour = price, click a dot for details</small></h3><div id="c-map" class="plot tall"></div></div>
+    </section>
+
+    <section class="panel" id="p-corr" hidden>
+      <div class="grid2">
+        <div class="card"><h3>Correlation matrix <small>click a cell to open that pair</small></h3><div id="c-heat" class="plot tall"></div></div>
+        <div class="card"><h3>Correlation with price</h3><div id="c-corr" class="plot tall"></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-zip" hidden>
+      <div class="card">
+        <div class="controls"><label>Rank by <select id="zm">
+          <option value="median">Median price</option><option value="count">Number of sales</option><option value="ppsf">Median price per sqft</option></select></label>
+          <label>Top <input type="range" id="zn" min="5" max="40" value="15"><span id="zn-v">15</span></label></div>
+        <div id="c-zip" class="plot tall"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-data" hidden>
+      <div class="card">
+        <div class="controls"><input type="search" id="q" placeholder="Search id or zipcode"><button class="btn" id="csv" type="button">Download filtered CSV</button>
+          <span class="grow"></span><button class="btn ghost" id="pp" type="button">Prev</button><span id="pg"></span><button class="btn ghost" id="pn" type="button">Next</button></div>
+        <div class="scroll"><table id="tbl"></table></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<aside class="drawer" id="drawer" hidden aria-live="polite"></aside>
+<div class="toast" id="toast" role="status"></div>
+<script src="explorer.js"></script>
+</body>
+</html>
