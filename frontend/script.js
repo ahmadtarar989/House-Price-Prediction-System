@@ -1,4 +1,4 @@
-// script.js - loads the real results from the Flask API and draws the dashboard.
+// script.js - loads the results from static JSON files (works on GitHub Pages) and draws the dashboard.
 
 const $ = (selector) => document.querySelector(selector);
 const fmt = (n, d = 0) => (n === null || n === undefined) ? "-" :
@@ -6,9 +6,8 @@ const fmt = (n, d = 0) => (n === null || n === undefined) ? "-" :
 
 async function getJSON(url, options) {
   const res = await fetch(url, options);
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || res.statusText);
-  return data;
+  if (!res.ok) throw new Error(url + " not found (" + res.status + ")");
+  return await res.json();
 }
 
 // Build a table. `rows` is an array of arrays; text goes in with textContent (safe).
@@ -95,7 +94,7 @@ async function renderRejected(etl) {
   $("#rejected-note").textContent = etl.validate.failed
     ? `${etl.validate.failed} records failed validation and were kept out of the database. Failed rules by field: ${fields}.`
     : "No records failed validation.";
-  const data = await getJSON("/api/rejected");
+  const data = await getJSON("rejected.json");
   renderTable($("#rejected"), ["id", "price", "bedrooms", "bathrooms", "sqft_living", "Reason"],
     data.rows.map((r) => [r[0], fmt(r[1]), r[2], r[3], fmt(r[4]), r[5]]), 1);
   document.querySelectorAll("#rejected td:last-child").forEach((td) => {
@@ -103,15 +102,18 @@ async function renderRejected(etl) {
   });
 }
 
-// data preview with paging
+// data preview with paging (paging is done in the browser from preview.json)
 const page = { offset: 0, size: 10 };
+let PREVIEW = null;
 async function loadPreview() {
-  const d = await getJSON(`/api/preview?limit=${page.size}&offset=${page.offset}`);
-  renderTable($("#preview-table"), d.columns, d.rows, 0);
-  const from = page.offset + 1, to = Math.min(page.offset + page.size, d.total);
-  $("#page-label").textContent = `Rows ${fmt(from)} to ${fmt(to)} of ${fmt(d.total)}`;
+  if (!PREVIEW) PREVIEW = await getJSON("preview.json");
+  const rows = PREVIEW.rows.slice(page.offset, page.offset + page.size);
+  const total = PREVIEW.rows.length;
+  renderTable($("#preview-table"), PREVIEW.columns, rows, 0);
+  const from = total ? page.offset + 1 : 0, to = Math.min(page.offset + page.size, total);
+  $("#page-label").textContent = `Rows ${fmt(from)} to ${fmt(to)} of ${fmt(total)} (sample of ${fmt(PREVIEW.total)} rows)`;
   $("#prev").disabled = page.offset === 0;
-  $("#next").disabled = page.offset + page.size >= d.total;
+  $("#next").disabled = page.offset + page.size >= total;
 }
 
 function renderInfo(eda) {
@@ -157,10 +159,10 @@ function renderCharts(eda) {
       const fig = document.createElement("figure");
       if (WIDE.has(c.file)) fig.className = "wide";
       const link = document.createElement("a");
-      link.href = "/visualizations/" + c.file;
+      link.href = "../visualizations/" + c.file;
       link.target = "_blank";
       const img = document.createElement("img");
-      img.src = "/visualizations/" + c.file;
+      img.src = "../visualizations/" + c.file;
       img.alt = c.title;
       img.loading = "lazy";
       link.appendChild(img);
@@ -193,7 +195,7 @@ function renderFindings(eda) {
 // ---------- start ----------
 async function loadDashboard() {
   try {
-    const [etl, eda] = await Promise.all([getJSON("/api/etl"), getJSON("/api/eda")]);
+    const [etl, eda] = await Promise.all([getJSON("etl.json"), getJSON("eda.json")]);
     showMessage("");
     renderCards(eda, etl);
     renderPipeline(etl);
@@ -211,21 +213,6 @@ async function loadDashboard() {
 $("#page-size").addEventListener("change", (e) => { page.size = +e.target.value; page.offset = 0; loadPreview(); });
 $("#prev").addEventListener("click", () => { page.offset = Math.max(0, page.offset - page.size); loadPreview(); });
 $("#next").addEventListener("click", () => { page.offset += page.size; loadPreview(); });
-
-$("#run-btn").addEventListener("click", async () => {
-  const btn = $("#run-btn");
-  btn.disabled = true;
-  $("#run-status").textContent = "Running ETL and EDA...";
-  try {
-    await getJSON("/api/run", { method: "POST" });
-    $("#run-status").textContent = "Finished";
-    page.offset = 0;
-    await loadDashboard();
-  } catch (err) {
-    $("#run-status").textContent = "Failed: " + err.message;
-  }
-  btn.disabled = false;
-});
 
 loadDashboard();
 
