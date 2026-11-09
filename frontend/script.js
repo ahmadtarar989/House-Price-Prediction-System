@@ -1,7 +1,20 @@
 // script.js - draws the dashboard.
-// On your own computer (run.bat, 127.0.0.1) it uses the live Flask API and the "Run pipeline" button works.
-// On GitHub Pages it reads the static .json files instead (the button is disabled there).
-const LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
+// If the Flask API answers (run.bat, localhost, 127.0.0.1, a LAN IP, anything), it uses the live API
+// and the "Run pipeline" button works. Otherwise (GitHub Pages, file://) it reads the static .json files
+// and the button is disabled.
+let LOCAL = false;
+
+// Ask the server whether the Flask API exists, instead of guessing from the hostname.
+async function detectLocal() {
+  if (location.protocol === "file:") return false;
+  try {
+    const res = await fetch("/api/etl", { cache: "no-store" });
+    const type = res.headers.get("content-type") || "";
+    return res.ok && type.includes("json");
+  } catch (e) {
+    return false;
+  }
+}
 
 const $ = (selector) => document.querySelector(selector);
 const fmt = (n, d = 0) => (n === null || n === undefined) ? "-" :
@@ -226,29 +239,40 @@ $("#page-size").addEventListener("change", (e) => { page.size = +e.target.value;
 $("#prev").addEventListener("click", () => { page.offset = Math.max(0, page.offset - page.size); loadPreview(); });
 $("#next").addEventListener("click", () => { page.offset += page.size; loadPreview(); });
 
-// Run pipeline button (needs the Flask server, so only works locally)
+// Run pipeline button (needs the Flask server, so it is enabled only when the API answers)
 const runBtn = $("#run-btn");
-if (LOCAL) {
-  runBtn.addEventListener("click", async () => {
-    runBtn.disabled = true;
-    $("#run-status").textContent = "Running ETL and EDA...";
-    try {
-      await getJSON("/api/run", { method: "POST" });
-      $("#run-status").textContent = "Finished";
-      page.offset = 0;
-      await loadDashboard();
-    } catch (err) {
-      $("#run-status").textContent = "Failed: " + err.message;
-    }
+
+function setupRunButton() {
+  if (LOCAL) {
     runBtn.disabled = false;
-  });
-} else {
-  runBtn.disabled = true;
-  runBtn.title = "Run pipeline works only when the project runs locally (run.bat)";
-  $("#run-status").textContent = "Run pipeline: local only";
+    runBtn.addEventListener("click", async () => {
+      runBtn.disabled = true;
+      $("#run-status").textContent = "Running ETL and EDA...";
+      try {
+        await getJSON("/api/run", { method: "POST" });
+        $("#run-status").textContent = "Finished";
+        page.offset = 0;
+        await loadDashboard();
+      } catch (err) {
+        $("#run-status").textContent = "Failed: " + err.message;
+      }
+      runBtn.disabled = false;
+    });
+  } else {
+    runBtn.disabled = true;
+    runBtn.title = "Run pipeline needs the Flask server (run.bat). It is not available on this page.";
+    $("#run-status").textContent = "Run pipeline: server not available";
+  }
 }
 
-loadDashboard();
+async function init() {
+  runBtn.disabled = true;
+  LOCAL = await detectLocal();
+  setupRunButton();
+  loadDashboard();
+}
+
+init();
 
 /* dark / light switch (remembered, shared with the Explorer page) */
 (function () {
