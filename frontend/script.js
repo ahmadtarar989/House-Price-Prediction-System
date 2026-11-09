@@ -1,4 +1,7 @@
-// script.js - loads the results from static JSON files (works on GitHub Pages) and draws the dashboard.
+// script.js - draws the dashboard.
+// On your own computer (run.bat, 127.0.0.1) it uses the live Flask API and the "Run pipeline" button works.
+// On GitHub Pages it reads the static .json files instead (the button is disabled there).
+const LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
 
 const $ = (selector) => document.querySelector(selector);
 const fmt = (n, d = 0) => (n === null || n === undefined) ? "-" :
@@ -94,7 +97,7 @@ async function renderRejected(etl) {
   $("#rejected-note").textContent = etl.validate.failed
     ? `${etl.validate.failed} records failed validation and were kept out of the database. Failed rules by field: ${fields}.`
     : "No records failed validation.";
-  const data = await getJSON("rejected.json");
+  const data = await getJSON(LOCAL ? "/api/rejected" : "rejected.json");
   renderTable($("#rejected"), ["id", "price", "bedrooms", "bathrooms", "sqft_living", "Reason"],
     data.rows.map((r) => [r[0], fmt(r[1]), r[2], r[3], fmt(r[4]), r[5]]), 1);
   document.querySelectorAll("#rejected td:last-child").forEach((td) => {
@@ -102,16 +105,25 @@ async function renderRejected(etl) {
   });
 }
 
-// data preview with paging (paging is done in the browser from preview.json)
+// data preview with paging
 const page = { offset: 0, size: 10 };
 let PREVIEW = null;
 async function loadPreview() {
-  if (!PREVIEW) PREVIEW = await getJSON("preview.json");
-  const rows = PREVIEW.rows.slice(page.offset, page.offset + page.size);
-  const total = PREVIEW.rows.length;
-  renderTable($("#preview-table"), PREVIEW.columns, rows, 0);
-  const from = total ? page.offset + 1 : 0, to = Math.min(page.offset + page.size, total);
-  $("#page-label").textContent = `Rows ${fmt(from)} to ${fmt(to)} of ${fmt(total)} (sample of ${fmt(PREVIEW.total)} rows)`;
+  let columns, rows, total, label;
+  if (LOCAL) {
+    const d = await getJSON(`/api/preview?limit=${page.size}&offset=${page.offset}`);
+    columns = d.columns; rows = d.rows; total = d.total;
+    label = `Rows ${fmt(page.offset + 1)} to ${fmt(Math.min(page.offset + page.size, total))} of ${fmt(total)}`;
+  } else {
+    if (!PREVIEW) PREVIEW = await getJSON("preview.json");
+    columns = PREVIEW.columns;
+    rows = PREVIEW.rows.slice(page.offset, page.offset + page.size);
+    total = PREVIEW.rows.length;
+    const from = total ? page.offset + 1 : 0;
+    label = `Rows ${fmt(from)} to ${fmt(Math.min(page.offset + page.size, total))} of ${fmt(total)} (sample of ${fmt(PREVIEW.total)} rows)`;
+  }
+  renderTable($("#preview-table"), columns, rows, 0);
+  $("#page-label").textContent = label;
   $("#prev").disabled = page.offset === 0;
   $("#next").disabled = page.offset + page.size >= total;
 }
@@ -195,7 +207,7 @@ function renderFindings(eda) {
 // ---------- start ----------
 async function loadDashboard() {
   try {
-    const [etl, eda] = await Promise.all([getJSON("etl.json"), getJSON("eda.json")]);
+    const [etl, eda] = await Promise.all([getJSON(LOCAL ? "/api/etl" : "etl.json"), getJSON(LOCAL ? "/api/eda" : "eda.json")]);
     showMessage("");
     renderCards(eda, etl);
     renderPipeline(etl);
@@ -213,6 +225,28 @@ async function loadDashboard() {
 $("#page-size").addEventListener("change", (e) => { page.size = +e.target.value; page.offset = 0; loadPreview(); });
 $("#prev").addEventListener("click", () => { page.offset = Math.max(0, page.offset - page.size); loadPreview(); });
 $("#next").addEventListener("click", () => { page.offset += page.size; loadPreview(); });
+
+// Run pipeline button (needs the Flask server, so only works locally)
+const runBtn = $("#run-btn");
+if (LOCAL) {
+  runBtn.addEventListener("click", async () => {
+    runBtn.disabled = true;
+    $("#run-status").textContent = "Running ETL and EDA...";
+    try {
+      await getJSON("/api/run", { method: "POST" });
+      $("#run-status").textContent = "Finished";
+      page.offset = 0;
+      await loadDashboard();
+    } catch (err) {
+      $("#run-status").textContent = "Failed: " + err.message;
+    }
+    runBtn.disabled = false;
+  });
+} else {
+  runBtn.disabled = true;
+  runBtn.title = "Run pipeline works only when the project runs locally (run.bat)";
+  $("#run-status").textContent = "Run pipeline: local only";
+}
 
 loadDashboard();
 
